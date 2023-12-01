@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gestao_despesas/items/ItemFinanceiro.dart';
 import 'package:gestao_despesas/views/CadastroDespesas.dart';
+import 'package:gestao_despesas/views/LoginScreen.dart';
+import 'package:gestao_despesas/views/RelatorioDespesas.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -13,6 +15,19 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    if (index == 0) {
+    } else if (index == 1) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => RelatorioDespesas()));
+    }
+  }
 
   void _navegarParaCadastroDespesas() {
     Navigator.of(context).push(MaterialPageRoute(
@@ -82,6 +97,17 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Home'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut(); 
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+              );
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -157,10 +183,7 @@ class _HomeState extends State<Home> {
                             (item.eDespesa ? '-' : '+') +
                                 item.valor.toStringAsFixed(2),
                             style: TextStyle(
-                              color: item.eDespesa
-                                  ? Colors.red
-                                  : Colors
-                                      .green, 
+                              color: item.eDespesa ? Colors.red : Colors.green,
                             ),
                           ),
                         );
@@ -172,6 +195,20 @@ class _HomeState extends State<Home> {
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.bar_chart),
+            label: 'Relatórios',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
   }
@@ -203,9 +240,6 @@ class _HomeState extends State<Home> {
         ),
       );
     });
-
-    // Ordena os itens por data, se necessário.
-    // itens.sort((a, b) => a.data.compareTo(b.data));
 
     return itens;
   }

@@ -30,7 +30,9 @@ class _CadastroDespesasState extends State<CadastroDespesas> {
   final _formKey = GlobalKey<FormState>();
   final DateFormat _dateFormat = DateFormat('dd/MM/yyyy');
   final String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  String? _selectedCategory;
+
+  final List<String> _categorias = ['Food', 'Shopping', 'Miscellaneous'];
 
   @override
   void dispose() {
@@ -75,7 +77,7 @@ class _CadastroDespesasState extends State<CadastroDespesas> {
         await FirebaseFirestore.instance.collection('Despesas').add({
           'userId': userId,
           'data': _dateFormat.parse(_dataController.text),
-          'categoria': _categoriaController.text,
+          'categoria': _selectedCategory,
           'valor': double.parse(_valorController.text.replaceAll('R\$', '')),
           'método_pagamento': _metodoPagamentoController.text,
           'descrição': _descricaoController.text.isNotEmpty
@@ -121,12 +123,26 @@ class _CadastroDespesasState extends State<CadastroDespesas> {
                   return null;
                 },
               ),
-              TextFormField(
-                controller: _categoriaController,
-                decoration: InputDecoration(labelText: 'Categoria'),
+              DropdownButtonFormField<String>(
+                value: _selectedCategory,
+                decoration: InputDecoration(
+                  labelText: 'Categoria',
+                  border: OutlineInputBorder(),
+                ),
+                items: _categorias.map((String categoria) {
+                  return DropdownMenuItem<String>(
+                    value: categoria,
+                    child: Text(categoria),
+                  );
+                }).toList(),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _selectedCategory = newValue;
+                  });
+                },
                 validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Por favor, insira uma categoria.';
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, escolha uma categoria.';
                   }
                   return null;
                 },
