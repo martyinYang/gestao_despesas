@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "1014146262633",
+    "firebase_url": "https://gestao-despesas-default-rtdb.firebaseio.com",
+    "project_id": "gestao-despesas",
+    "storage_bucket": "gestao-despesas.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1014146262633:android:fdeef77316fd5d1a8724f8",
+        "android_client_info": {
+          "package_name": "com.android.application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMCDYdszdDJ3SDy3S1Y11KG4M-xcY-Uz0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1014146262633:android:e5b95c9d2496516e8724f8",
+        "android_client_info": {
+          "package_name": "com.example.gestao_despesas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMCDYdszdDJ3SDy3S1Y11KG4M-xcY-Uz0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
